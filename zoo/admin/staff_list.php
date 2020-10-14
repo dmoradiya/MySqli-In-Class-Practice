@@ -19,7 +19,18 @@ if( 0 === $result->num_rows ) {
     $staff_members = '<tr><td colspan="4">There are no staff members</td></tr>';
 } else {
     while( $row = $result->fetch_assoc() ) {
-        
+        $staff_members .= sprintf('
+            <tr>
+                <td>%s</td>
+                <td>$s</td>
+                <td>%s</td>
+                <td>Edit</td>
+            </tr>
+            ',
+            $row['StaffID'],
+            $row['FirstName'],
+            $row['LastName']
+         );
     }
 }
 
