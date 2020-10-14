@@ -9,7 +9,13 @@
         die('Connection failed: ' . $connection->connect_error);
     }
     
-    echo 'Connected successfully. Now you can perform queries.';
+    $sql = "SELECT * FROM Exhibit";
+    $result = $connection->query($sql);
+    if( $result->num_rows > 0 ) {
+        echo "We have exhibits";
+    } else {
+        echo "There are no exhibits";
+    }
     
     $connection->close();
 ?>
