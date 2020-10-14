@@ -1,3 +1,30 @@
+<?php
+    require '../constants.php';
+    $species_select_options = null;
+    $staff_select_options = null;
+    $species_sql = "SELECT SpeciesID, CommonName FROM Species";
+
+    $connection = new MySQLi(HOST, USER, PASSWORD, DATABASE);
+    if( $connection->connect_errno ) {
+        die('Connection failed: ' . $connection->connect_error);
+    }
+    if( !$species_result = $connection->query($species_sql) ) {
+        echo "Something went wrong with the species query";
+        exit();
+    }
+
+    if( $species_result->num_rows > 0 ) {
+        while( $species = $species_result->fetch_assoc() ) {
+            $species_select_options .= sprintf('
+                    <option value="%s">%s</option>
+                ',
+                $species['SpeciesID'],
+                $species['CommonName']
+            );
+        }
+    }
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,6 +60,7 @@
             <label for="species">Species</label>
             <select name="species" id="species">
                 <option value="">Select a species</option>
+                <?php echo $species_select_options; ?>
             </select>
         </p>
         <p>
