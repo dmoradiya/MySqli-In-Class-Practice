@@ -10,9 +10,18 @@
     }
     
     $sql = "SELECT * FROM Exhibit";
+    
     $result = $connection->query($sql);
+    
     if( $result->num_rows > 0 ) {
-        echo "We have exhibits";
+        
+        while( $row = $result->fetch_assoc() ){
+            echo '<pre>';
+            print_r($row);
+            echo '</pre>';
+        }
+
+
     } else {
         echo "There are no exhibits";
     }
