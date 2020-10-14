@@ -9,15 +9,23 @@
         if( $connection->connect_errno ) {
             die('Connection failed: ' . $connection->connect_error);
         }
+        // PREPARED STATEMENT
+        // $statement = $connection->prepare("INSERT INTO Staff (FirstName, LastName) VALUES(?,?)");
+        // $statement->bind_param("ss", $_POST['first_name'], $_POST['last_name']);
+        // if( $statement->execute() ) {
+        //     echo "Yay! We've added a staff member to the database";
+        // } else {
+        //     echo "There was a problem adding a staff member to the database";
+        // }
+        // $statement->close();
 
-        $statement = $connection->prepare("INSERT INTO Staff (FirstName, LastName) VALUES(?,?)");
-        $statement->bind_param("ss", $_POST['first_name'], $_POST['last_name']);
-        if( $statement->execute() ) {
-            echo "Yay! We've added a staff member to the database";
-        } else {
-            echo "There was a problem adding a staff member to the database";
+        // WITHOUT A PREPARED STATEMENT
+        $first_name = $connection->real_escape_string($_POST['first_name']);
+        $last_name = $connection->real_escape_string($_POST['last_name']);
+        $sql = "INSERT INTO Staff (FirstName, LastName) VALUES('$first_name', '$last_name')";
+        if( !$result = $connection->query($sql) ) {
+            die("Could not add staff member to the database");
         }
-        $statement->close();
 
         $connection->close();
     }
