@@ -4,13 +4,14 @@
     // Create connection
     $connection = new mysqli(HOST, USER, PASSWORD, DATABASE);
     $number_of_exhibits = 0;
+    $exhibit_message = "";
 
     // Did we have errors connecting?
     if ($connection->connect_error) {
         die('Connection failed: ' . $connection->connect_error);
     }
     
-    $sql = "SELECT * FROM Exhibit WHERE NOW() BETWEEN `StartDate` AND `EndDate`";
+    $sql = "SELECT * FROM Exhibit WHERE NOW() BETWEEN StartDate AND EndDate";
     
     $result = $connection->query($sql);
     
@@ -19,9 +20,15 @@
     if( $result->num_rows > 0 ) {
         
         while( $row = $result->fetch_assoc() ){
-            echo '<pre>';
-            print_r($row);
-            echo '</pre>';
+            $exhibit_message .= sprintf('
+                    <h3>%s</h3>
+                    <p>%s</p>
+                    <p><a href="exhibit_animals.php?exhibit_id=%d">View animals</a></p>
+                ',
+                $row['ExhibitName'],
+                $row['ExhibitDescription'],
+                $row['ExhibitID'],
+            );
         }
 
 
@@ -43,5 +50,6 @@
     <h1>Welcome to Tech Careers Zoo</h1>
     <h2>Exhibits</h2>
     <p>We currently have <?php echo $number_of_exhibits; ?> exhibit(s) for you to visit</p>
+    <?php echo $exhibit_message; ?>
 </body>
 </html>
