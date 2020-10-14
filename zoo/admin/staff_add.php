@@ -1,6 +1,26 @@
 <?php
     require '../constants.php';
+    if( $_POST ) {
+        echo '<pre>';
+        print_r($_POST);
+        echo '</pre>';
 
+        $connection = new MySQLi(HOST, USER, PASSWORD, DATABASE);
+        if( $connection->connect_errno ) {
+            die('Connection failed: ' . $connection->connect_error);
+        }
+
+        $statement = $connection->prepare("INSERT INTO Staff (FirstName, LastName) VALUES(?,?)");
+        $statement->bind_param("ss", $_POST['first_name'], $_POST['last_name']);
+        if( $statement->execute() ) {
+            echo "Yay! We've added a staff member to the database";
+        } else {
+            echo "There was a problem adding a staff member to the database";
+        }
+        $statement->close();
+
+        $connection->close();
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
