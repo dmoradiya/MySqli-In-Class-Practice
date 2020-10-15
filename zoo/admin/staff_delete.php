@@ -5,6 +5,7 @@
     $first_name = null;
     $last_name = null;
     $show_form = true;
+    $message = null;
 
     $connection = new MySQLi(HOST, USER, PASSWORD, DATABASE);
     if( $connection->connect_errno ) {
@@ -37,9 +38,29 @@
 
     if( $_POST ) {
         $show_form = false;
+        echo '<pre>';
+        print_r($_POST);
+        echo '</pre>';
+
+        $staff_id = $_POST['staff_id'];
+        $animal_sql = "SELECT Name FROM Animal WHERE StaffID = $staff_id";
+        $result = $connection->query($animal_sql);
+        if( !$result ) {
+            exit("There was a problem fetching results");
+        }
+        if( 0 === $result->num_rows ) {
+            exit("Delete the staff member");
+        } else {
+            $message = "This staff member is assigned to look after the following animals: ";
+            while( $row = $result->fetch_assoc() ) {
+                $message .= sprintf("%s, ", $row['Name'] );
+            }
+            $message .= " and they cannot be removed. Change who looks after these animals and try again.";
+        }
+
     }
 
-
+    $connection->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -58,7 +79,7 @@
             <input type="submit" value="Yes, remove staff member">
         </form>
     <?php else: ?>
-        <p>I am a message</p>
+        <p><?php echo $message; ?></p>
     <?php endif; ?>
 </body>
 </html>
