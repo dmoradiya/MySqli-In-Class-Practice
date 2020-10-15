@@ -42,14 +42,24 @@
         print_r($_POST);
         echo '</pre>';
 
-        $staff_id = $_POST['staff_id'];
+        if( filter_var($_POST['staff_id'], FILTER_VALIDATE_INT) ) {
+            $staff_id = $_POST['staff_id'];
+        } else {
+            exit("An incorrect value for Staff ID was used");
+        }
+
         $animal_sql = "SELECT Name FROM Animal WHERE StaffID = $staff_id";
         $result = $connection->query($animal_sql);
         if( !$result ) {
             exit("There was a problem fetching results");
         }
         if( 0 === $result->num_rows ) {
-            exit("Delete the staff member");
+            $delete_sql = "DELETE FROM Staff WHERE StaffID = $staff_id";
+            if( $connection->query($delete_sql) ) {
+                $message = "Staff member deleted successfully";
+            } else {
+                exit("There was a problem deleting this staff member");
+            }
         } else {
             $message = "This staff member is assigned to look after the following animals: ";
             while( $row = $result->fetch_assoc() ) {
