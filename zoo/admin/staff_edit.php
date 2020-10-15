@@ -14,7 +14,7 @@
         if( $statement = $connection->prepare("UPDATE Staff SET FirstName=?, LastName=? WHERE StaffID=?")) {
             if( $statement->bind_param("ssi", $_POST['first_name'], $_POST['last_name'], $_POST['staff_id']) ) {
                 if( $statement->execute() ) {
-                   $message = "You have updated successfully"; 
+                   $message = "You have updated successfully";
                 } else {
                     exit("There was a problem with the execute");
                 }
@@ -24,6 +24,7 @@
         } else {
             exit("There was a problem with the prepare statement");
         }
+        $statement->close();
     }
 
     // If we don't have a staff id, do not continue

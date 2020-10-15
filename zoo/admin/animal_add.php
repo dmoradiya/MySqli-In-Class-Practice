@@ -59,6 +59,7 @@
         } else {
             exit("There was a problem with the prepare statement");
         }
+        $insert->close();
 
 
     }
