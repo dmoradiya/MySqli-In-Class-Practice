@@ -6,6 +6,7 @@
     <title>Zoo - Add Staff</title>
 </head>
 <body>
+<?php include 'admin_menu.php' ?>
     <h1>Admin menu</h1>
     <ul>
         <li><a href="animal_add.php">Add animal</a></li>

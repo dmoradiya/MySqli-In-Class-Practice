@@ -46,6 +46,7 @@ if( 0 === $result->num_rows ) {
     <title>Zoo - Staff List</title>
 </head>
 <body>
+<?php include 'admin_menu.php' ?>
     <h1>Staff Members</h1>
     <table>
         <tr>
