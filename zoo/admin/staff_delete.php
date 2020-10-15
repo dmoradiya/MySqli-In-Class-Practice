@@ -2,6 +2,8 @@
 
     require '../constants.php';
     $staff_id = null;
+    $first_name = null;
+    $last_name = null;
 
     $connection = new MySQLi(HOST, USER, PASSWORD, DATABASE);
     if( $connection->connect_errno ) {
@@ -24,6 +26,12 @@
         exit("The staff id provided did not match anyone in the database");
     }
 
+    while( $row = $result->fetch_assoc() ) {
+        $first_name = $row['FirstName'];
+        $last_name = $row['LastName'];
+    }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,8 +44,8 @@
     <?php include 'admin_menu.php'; ?>
     <h1>Remove Staff Member</h1>
     <form action="#" method="POST" enctype="multipart/form-data">
-        <p>Are you certain you want to remove FIRST_NAME LAST_NAME</p>
-        <input type="hidden" name="staff_id" value="STAFF_ID">
+        <p>Are you certain you want to remove <?php echo $first_name . ' ' . $last_name; ?></p>
+        <input type="hidden" name="staff_id" value="<?php echo $staff_id; ?>">
         <input type="submit" value="Yes, remove staff member">
     </form>
 </body>
